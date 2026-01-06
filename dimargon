@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width,initial-scale=1" />
+ <title>bypysrbx — попробовать вернуть свой аккаунт</title>
+ <style>
+ :root{
+ --bg:#0f1724;
+ --card:#111827;
+ --accent:#06b6d4;
+ --text:#e6eef8;
+ --muted:#9aa6b2;
+ }
+ body{
+ margin:0;
+ font-family: Inter, Roboto, Arial, sans-serif;
+ background:linear-gradient(180deg,#051025 0%, #0f1724 100%);
+ color:var(--text);
+ min-height:100vh;
+ }
+ /* верхняя менюшка */
+ header {
+ position:sticky;
+ top:0;
+ background:rgba(3,7,18,0.85);
+ backdrop-filter: blur(6px);
+ border-bottom:1px solid rgba(255,255,255,0.03);
+ padding:12px 20px;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ z-index:10;
+ }
+ .brand{
+ font-weight:700;
+ color:var(--accent);
+ font-size:18px;
+ }
+ .tagline{
+ color:var(--text);
+ font-size:15px;
+ margin-left:6px;
+ }
+
+ main{
+ max-width:920px;
+ margin:36px auto;
+ padding:20px;
+ }
+ .card{
+ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+ border:1px solid rgba(255,255,255,0.04);
+ padding:20px;
+ border-radius:10px;
+ box-shadow: 0 6px 24px rgba(2,6,23,0.6);
+ }
+ h1{ margin:0 0 12px 0; font-size:20px; }
+ .hint { color:var(--muted); font-size:13px; margin-bottom:14px; }
+
+ .field{
+ display:flex;
+ flex-direction:column;
+ gap:6px;
+ margin-bottom:14px;
+ }
+ input[type="text"]{
+ padding:10px 12px;
+ border-radius:8px;
+ border:1px solid rgba(255,255,255,0.06);
+ background:rgba(255,255,255,0.02);
+ color:var(--text);
+ outline:none;
+ font-size:15px;
+ }
+ input[type="text"]:focus{
+ box-shadow:0 0 0 4px rgba(6,182,212,0.06);
+ border-color:var(--accent);
+ }
+ .btn{
+ display:inline-block;
+ padding:10px 14px;
+ background:var(--accent);
+ color:#022;
+ border-radius:8px;
+ font-weight:600;
+ text-decoration:none;
+ cursor:pointer;
+ border:none;
+ }
+ .note { margin-top:12px; color:#fca5a5; font-size:13px; }
+
+ .result{
+ margin-top:12px;
+ padding:10px;
+ border-radius:8px;
+ background:linear-gradient(90deg, rgba(6,182,212,0.08), rgba(99,102,241,0.04));
+ color:var(--text);
+ font-size:14px;
+ }
+ footer{ margin-top:18px; color:var(--muted); font-size:13px; }
+ </style>
+</head>
+<body>
+ <header>
+ <div class="brand">bypysrbx</div>
+ <div class="tagline">попробуй вернуть свой акк!!!</div>
+ </header>
+
+ <main>
+ <div class="card">
+ <h1>Демонстрационный интерфейс</h1>
+ <div class="hint">Это макет. Не вводи пароли или личные данные.</div>
+
+ <!-- Первая строчка -->
+ <div class="field">
+ <label style="font-size:14px;color:var(--muted)">Первая строчка — username обидчика</label>
+ <input id="username" type="text" placeholder='впишите username обидчика только без "@"' autocomplete="off" />
+ </div>
+
+ <!-- Нижняя строчка -->
+ <div class="field">
+ <label style="font-size:14px;color:var(--muted)">Нижняя строчка — rbyx ID s обидчика</label>
+ <input id="rbxid" type="text" placeholder="впишите сюда rbyx ID s обидчика" inputmode="numeric" autocomplete="off" />
+ </div>
+
+ <button id="submitBtn" class="btn">Проверить (демо)</button>
+
+ <div id="message" class="result" style="display:none;"></div>
+
+ <div class="note">Примечание: эта страница только демонстрационная и не связана с какими-либо внешними сервисами.</div>
+ <footer>© bypysrbx — макет интерфейса</footer>
+ </div>
+ </main>
+
+ <script>
+ const usernameInput = document.getElementById('username');
+ const rbxInput = document.getElementById('rbxid');
+ const msg = document.getElementById('message');
+ const btn = document.getElementById('submitBtn');
+
+ function showMessage(text, ok = true){
+ msg.style.display = 'block';
+ msg.style.background = ok ? 'linear-gradient(90deg, rgba(6,182,212,0.08), rgba(34,197,94,0.04))' :
+ 'linear-gradient(90deg, rgba(244,63,94,0.06), rgba(255,99,132,0.03))';
+ msg.textContent = text;
+ }
+
+ btn.addEventListener('click', ()=> {
+ const u = usernameInput.value.trim();
+ const id = rbxInput.value.trim();
+
+ if(!u){
+ showMessage('Введите username обидчика (поле не должно быть пустым).', false);
+ return;
+ }
+ if(u.includes('@')){
+ showMessage('Пожалуйста, введите username без символа "@".', false);
+ return;
+ }
+ if(!id){
+ showMessage('Введите rbyx ID s обидчика (поле не должно быть пустым).', false);
+ return;
+ }
+ // простая проверка: допустим, ID должен быть цифрами
+ if(!/^\d+$/.test(id)){
+ showMessage('rbyx ID s должен содержать только цифры.', false);
+ return;
+ }
+
+ // Демонстрационное поведение: никаких внешних запросов!
+ showMessage('Демонстрация: данные приняты. Это локальный макет и не отправляет информацию.', true);
+ });
+
+ // Дополнительно: не позволяем вводить "@"
+ usernameInput.addEventListener('input', ()=> {
+ if(usernameInput.value.includes('@')){
+ usernameInput.value = usernameInput.value.replace(/@/g, '');
+ }
+ });
+ </script>
+</body>
+</html>
